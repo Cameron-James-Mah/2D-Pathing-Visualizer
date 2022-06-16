@@ -8,7 +8,7 @@ for(let i = 0; i < 9; i++){
 }
 
 let selected = "";
-
+visitedSet = new Set();
 
 
 
@@ -60,19 +60,79 @@ function reset(){
 function solve(){
     //populate board array with the proper values
     //Determine the selected algo
+    let y = 0;
+    let x = 0;
+    let start = 0;
+    let end = 0;
     for(let i = 0; i < 9; i++){
         board[i] = [];
         for(let j = 0; j < 21; j++){
-            if(document.getElementById(String(i)+"x"+String(j)).style.backgroundColor == 'red'){
-                alert(String(i)+"x"+String(j));
+            if(document.getElementById(String(i)+"x"+String(j)).style.backgroundColor == 'white'){
+                //alert(String(i)+"x"+String(j));
+                board[i][j] = 0; 
+            }
+            else if(document.getElementById(String(i)+"x"+String(j)).style.backgroundColor == 'black'){
+                //alert(String(i)+"x"+String(j));
+                board[i][j] = 1;
+            }
+            else if(document.getElementById(String(i)+"x"+String(j)).style.backgroundColor == 'green'){
+                //alert(String(i)+"x"+String(j));
+                board[i][j] = 2;
+                y = i;
+                x = j;
+                start++;
+            }
+            else if(document.getElementById(String(i)+"x"+String(j)).style.backgroundColor == 'red'){
+                //alert(String(i)+"x"+String(j));
+                board[i][j] = 3;
+                end++;
             }
             
         }
     }
-    BFS();
+    if(start == 0){
+        alert("No start");
+        return;
+    }
+    if(start > 1){
+        alert("Too many starts");
+        return;
+    }
+    if(end == 0){
+        alert("No goal");
+        return;
+    }
+    if(end > 1){
+        alert("Too many goals");
+        return;
+    }
+    visitedSet.clear();
+    DFS(y, x);
 }
 
 function BFS(){
+
+}
+
+function DFS(y, x){
+    //alert(visitedSet.size);
+    let cord = y.toString()+"x"+x.toString();
+    //alert(y+"."+x);
+    if(y < 0 || x < 0 || y >= 21 || x >= 21 || visitedSet.has(cord) || board[y][x] == 1){
+        //alert(y+"."+x);
+        return;
+    }
+    if(board[y][x] == 3){//solved
+        alert(1);
+        //maybe call my visualization here
+        return;
+    }
+    visitedSet.add(cord);
+    DFS(y, x+1);
+    DFS(y, x-1);
+    DFS(y+1, x);
+    DFS(y-1, x);
+    
 
 }
 
