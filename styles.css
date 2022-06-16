@@ -1,27 +1,4 @@
-/*
-.grid-container {
-  display: inline-grid;
-  -ms-layout-grid: fixed;
-  grid-template-columns: auto auto auto auto auto auto auto auto auto;
-  background-color: #474f55;
-  padding: 10px;
-  height: 800px;
-  width: 800px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 
-.grid-item {
-  background-color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  padding: 20px;
-  font-size: 30px;
-  text-align: center;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}*/
 
 table {
   border-collapse: collapse;

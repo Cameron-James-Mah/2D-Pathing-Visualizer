@@ -1,7 +1,8 @@
+//0 is default //1 is wall //2 is start //3 is goal
 let board = [];
 for(let i = 0; i < 9; i++){
     board[i] = [];
-    for(let j = 0; j < 9; j++){
+    for(let j = 0; j < 21; j++){
         board[i][j] = 0;
     }
 }
@@ -38,11 +39,40 @@ function colorChanger(e){
     else if(selected == "goal"){//red
         e.style.backgroundColor = 'red';
     }
+    validate(e);
     
     
 }
 
 function btnSelect(e){
     selected = e.id;
+}
+
+function reset(){
+    for(let i = 0; i < 9; i++){
+        board[i] = [];
+        for(let j = 0; j < 21; j++){
+            document.getElementById(String(i)+"x"+String(j)).style.backgroundColor = 'white';
+        }
+    }
+}
+
+function solve(){
+    //populate board array with the proper values
+    //Determine the selected algo
+    for(let i = 0; i < 9; i++){
+        board[i] = [];
+        for(let j = 0; j < 21; j++){
+            if(document.getElementById(String(i)+"x"+String(j)).style.backgroundColor == 'red'){
+                alert(String(i)+"x"+String(j));
+            }
+            
+        }
+    }
+    BFS();
+}
+
+function BFS(){
+
 }
 
