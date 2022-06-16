@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="styles.css" rel="stylesheet" type="text/css">
+    <script src="pathing.js"></script>
+</head>
+
+<h1 class="Title">2D Pathing Visualizer</h1>
+
+<body>
+    <!--id = y x || column row-->
+    <table id="board">
+        
+            <col>
+            <col>
+            <col>
+        
+            <col>
+            <col>
+            <col>
+        
+            <col>
+            <col>
+            <col>
+        
+        
+            <tr>
+                <td><input type="number" onClick="colorChanger(this)" id="00"  value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="01" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="02" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="03" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="04" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="05" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="06" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="07" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="08" min="1"
+                        max="9" value="" /></td>
+            <tr>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="10" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="11" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="12" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="13" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="14" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="15" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="16" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="17" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="18" min="1"
+                        max="9" value="" /></td>
+            <tr>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="20" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="21" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="22" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="23" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="24" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="25" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="26" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="27" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="28" min="1"
+                        max="9" value="" /></td>
+        
+            <tr>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="30" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="31" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="32" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="33" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="34" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="35" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="36" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="37" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="38" min="1"
+                        max="9" value="" /></td>
+            <tr>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="40" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="41" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="42" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="43" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="44" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="45" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="46" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="47" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="48" min="1"
+                        max="9" value="" /></td>
+            <tr>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="50" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="51" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="52" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="53" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="54" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="55" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="56" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="57" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="58" min="1"
+                        max="9" value="" /></td>
+        
+            <tr>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="60" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="61" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="62" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="63" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="64" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="65" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="66" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="67" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="68" min="1"
+                        max="9" value="" /></td>
+            <tr>
+                <!--97 11 26-->
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="70" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="71" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="72" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="73" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="74" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="75" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="76" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="77" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="78" min="1"
+                        max="9" value="" /></td>
+            <tr>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="80" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="81" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="82" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="83" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="84" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="85" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="86" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="87" min="1"
+                        max="9" value="" /></td>
+                <td><input type="number" onkeydown="checkLength(this)" onkeyup="checkLength(this)" id="88" min="1"
+                        max="9" value="" /></td>
+    </table>
+    <br>
+    <br>
+
+    <div class="options">
+        <button type="button" onclick="btnSelect(this)" id = "default">Passable</button>
+        <button type="button" onclick="btnSelect(this)" id = "wall">Wall</button>
+        <button type="button" onclick="btnSelect(this)" id="start">Start</button>
+        <button type="button" onclick="btnSelect(this)" id="goal">Goal</button>
+
+        <button type="button" onclick="Solve()">Search</button>
+    </div>
+    <br>
+    
+    
+</body>
+
+</html>
