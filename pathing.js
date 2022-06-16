@@ -9,7 +9,8 @@ for(let i = 0; i < 9; i++){
 
 let selected = "";
 visitedSet = new Set();
-
+let searchCache = [];
+let found = false;
 
 
 //User will click button to select what the cell will be then click the cell, default will be passable
@@ -106,8 +107,25 @@ function solve(){
         alert("Too many goals");
         return;
     }
+    //Reset for next search
     visitedSet.clear();
+    found = false;
     DFS(y, x);
+    if(found){//playback visualization
+        //alert(1);
+        visualize(0);
+    }
+    else{
+        alert("No valid path");
+    }
+}
+
+function visualize(index){
+    if(index >= searchCache.length){
+        return;
+    }
+    setTimeout(() => visualize(index+1), 400);
+    document.getElementById(searchCache[index]).style.backgroundColor = "blue";
 }
 
 function BFS(){
@@ -118,19 +136,21 @@ function DFS(y, x){
     //alert(visitedSet.size);
     let cord = y.toString()+"x"+x.toString();
     //alert(y+"."+x);
-    if(y < 0 || x < 0 || y >= 21 || x >= 21 || visitedSet.has(cord) || board[y][x] == 1){
+    if(y < 0 || x < 0 || y >= 9 || x >= 21 || visitedSet.has(cord) || board[y][x] == 1 || found){
         //alert(y+"."+x);
         return;
     }
+    searchCache.push(cord);
     if(board[y][x] == 3){//solved
-        alert(1);
+        //alert(1);
+        found = true;
         //maybe call my visualization here
         return;
     }
     visitedSet.add(cord);
     DFS(y, x+1);
-    DFS(y, x-1);
     DFS(y+1, x);
+    DFS(y, x-1);
     DFS(y-1, x);
     
 
