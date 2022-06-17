@@ -9,9 +9,9 @@ for(let i = 0; i < 9; i++){
 
 let selected = "";
 visitedSet = new Set();
-let searchCache = [];
+let searchCache = []; //algorithm searched path from start to goal
 let found = false;
-let pathCache = [];
+let pathCache = []; //Direct path from start to goal
 let lockout = false; //Disable all buttons and user input during this state, causes issues if during visualization something like reset is pressed
 
 
@@ -111,8 +111,22 @@ function solve(){
     }
     //Reset for next search
     visitedSet.clear();
+    clearArr(searchCache);
+    clearArr(pathCache);
     found = false;
-    DFS(y, x);
+    if(document.getElementById("algo").value.toString == "DFS"){
+        DFS(y, x);
+    }
+    else if(document.getElementById("algo").value.toString == "BFS"){
+
+    }
+    else if(document.getElementById("algo").value.toString == "A*"){
+        
+    }
+    else if(document.getElementById("algo").value.toString == "Dijkstra"){
+        
+    }
+    //DFS(y, x);
     if(found){//playback visualization
         //alert(1);
         visualize(0);
@@ -121,6 +135,12 @@ function solve(){
     }
     else{
         alert("No valid path");
+    }
+}
+
+function clearArr(arr){
+    while(arr.length > 0){
+        arr.pop();
     }
 }
 
