@@ -13,6 +13,8 @@ let searchCache = []; //algorithm searched path from start to goal
 let found = false;
 let pathCache = []; //Direct path from start to goal
 let lockout = false; //Disable all buttons and user input during this state, causes issues if during visualization something like reset is pressed
+let speed = 200; //Speed selected in selection box, affects visualize speed of algorithm. Used in setTimeout call so higher value = slower speed.
+let speed2 = 100;
 
 
 //User will click button to select what the cell will be then click the cell, default will be passable
@@ -48,10 +50,23 @@ function colorChanger(e){
 }
 
 function btnSelect(e){
+    if(lockout){
+        return;
+    }
     selected = e.id;
+    document.getElementById("default").style.backgroundColor = "white";
+    document.getElementById("wall").style.backgroundColor = "white";
+    document.getElementById("start").style.backgroundColor = "white";
+    document.getElementById("goal").style.backgroundColor = "white";
+    
+    e.style.backgroundColor = "grey";
 }
 
 function reset(){
+    if(lockout){
+        return;
+    }
+    //alert(lockout);
     for(let i = 0; i < 9; i++){
         board[i] = [];
         for(let j = 0; j < 21; j++){
@@ -63,6 +78,15 @@ function reset(){
 function solve(){
     //populate board array with the proper values
     //Determine the selected algo
+    if(lockout){
+        return;
+    }
+    //alert(document.getElementById("speed").value);
+    speed = 200;
+    speed = speed/document.getElementById("speed").value;
+    speed2 = 100;
+    speed2 = speed2/document.getElementById("speed").value;
+    lockout = true;
     let y = 0;
     let x = 0;
     let start = 0;
@@ -114,16 +138,16 @@ function solve(){
     clearArr(searchCache);
     clearArr(pathCache);
     found = false;
-    if(document.getElementById("algo").value.toString == "DFS"){
+    if(document.getElementById("algo").value == "DFS"){
         DFS(y, x);
     }
-    else if(document.getElementById("algo").value.toString == "BFS"){
+    else if(document.getElementById("algo").value == "BFS"){
 
     }
-    else if(document.getElementById("algo").value.toString == "A*"){
+    else if(document.getElementById("algo").value == "A*"){
         
     }
-    else if(document.getElementById("algo").value.toString == "Dijkstra"){
+    else if(document.getElementById("algo").value == "Dijkstra"){
         
     }
     //DFS(y, x);
@@ -146,24 +170,28 @@ function clearArr(arr){
 
 function visualize(index){//Show path traversed by the algorithm
     if(index >= searchCache.length){
-        setTimeout(() => showPath(pathCache.length-1), 200);
+        setTimeout(() => showPath(pathCache.length-1), speed);
         return;
     }
-    setTimeout(() => visualize(index+1), 100);
+    setTimeout(() => visualize(index+1), speed);
     document.getElementById(searchCache[index]).style.backgroundColor = "DodgerBlue";
 }
 
 function showPath(index){ //Show path from start to goal without branches
     if(index < 0){
+        lockout = false;
         return;
     }
-    setTimeout(() => showPath(index-1), 100);
+    setTimeout(() => showPath(index-1), speed2);
     document.getElementById(pathCache[index]).style.backgroundColor = "MediumSeaGreen";
 }
 
+//Maybe objects into queue that hold ref to parent cord
 function BFS(){
 
 }
+
+
 
 function DFS(y, x){
     //alert(visitedSet.size);
