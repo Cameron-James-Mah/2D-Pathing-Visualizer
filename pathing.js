@@ -11,6 +11,8 @@ let selected = "";
 visitedSet = new Set();
 let searchCache = [];
 let found = false;
+let pathCache = [];
+let lockout = false; //Disable all buttons and user input during this state, causes issues if during visualization something like reset is pressed
 
 
 //User will click button to select what the cell will be then click the cell, default will be passable
@@ -114,18 +116,29 @@ function solve(){
     if(found){//playback visualization
         //alert(1);
         visualize(0);
+        //alert(showPath.length);
+        //setTimeout(() => showPath(pathCache.length-1), 200);
     }
     else{
         alert("No valid path");
     }
 }
 
-function visualize(index){
+function visualize(index){//Show path traversed by the algorithm
     if(index >= searchCache.length){
+        setTimeout(() => showPath(pathCache.length-1), 200);
         return;
     }
-    setTimeout(() => visualize(index+1), 400);
-    document.getElementById(searchCache[index]).style.backgroundColor = "blue";
+    setTimeout(() => visualize(index+1), 100);
+    document.getElementById(searchCache[index]).style.backgroundColor = "DodgerBlue";
+}
+
+function showPath(index){ //Show path from start to goal without branches
+    if(index < 0){
+        return;
+    }
+    setTimeout(() => showPath(index-1), 100);
+    document.getElementById(pathCache[index]).style.backgroundColor = "MediumSeaGreen";
 }
 
 function BFS(){
@@ -140,6 +153,7 @@ function DFS(y, x){
         //alert(y+"."+x);
         return;
     }
+    pathCache.push(cord);
     searchCache.push(cord);
     if(board[y][x] == 3){//solved
         //alert(1);
@@ -152,6 +166,9 @@ function DFS(y, x){
     DFS(y+1, x);
     DFS(y, x-1);
     DFS(y-1, x);
+    if(!found){
+        pathCache.pop();
+    }
     
 
 }
