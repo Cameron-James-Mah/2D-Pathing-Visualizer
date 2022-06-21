@@ -10,11 +10,11 @@ for(let i = 0; i < 9; i++){
 let selected = "";
 visitedSet = new Set();
 let searchCache = []; //algorithm searched path from start to goal
-let found = false;
+let found = false; //
 let pathCache = []; //Direct playback path from start to goal
 let lockout = false; //Disable all buttons and user input during this state, causes issues if during visualization something like reset is pressed
 let speed = 200; //Speed selected in selection box, affects visualize speed of algorithm. Used in setTimeout call so higher value = slower speed.
-let speed2 = 100;
+let speed2 = 100; //Speed for the playback path
 let pathBFS = []; //Path for BFS, I think just have an arr of objects with ref to current cell value and prev cell value
 
 
@@ -83,7 +83,7 @@ function redo(){//Reset board except walls
     //alert(lockout);
     for(let i = 0; i < 9; i++){
         for(let j = 0; j < 21; j++){
-            if(board[i][j] != 1){
+            if(document.getElementById(String(i)+"x"+String(j)).style.backgroundColor != "black"){
                 document.getElementById(String(i)+"x"+String(j)).style.backgroundColor = 'white';
             }
         }
@@ -196,10 +196,6 @@ function visualize(index){//Show path traversed by the algorithm
     document.getElementById(searchCache[index]).style.backgroundColor = "DodgerBlue";
 }
 
-
-function cacheBFS(){
-    
-}
 function showPath(index){ //Show path from start to goal without branches
     if(index < 0){
         lockout = false;
@@ -209,12 +205,20 @@ function showPath(index){ //Show path from start to goal without branches
     document.getElementById(pathCache[index]).style.backgroundColor = "MediumSeaGreen";
 }
 
+function A(){
+
+}
+
+function dijkstra(){
+
+}
+
 //Maybe objects into queue that hold ref to parent cord
 function BFS(y, x){
     //alert(1);
     let que = [];
     let obj = {
-        path: [],
+        path: [y.toString()+"x"+x.toString()],
         curr: y.toString()+"x"+x.toString(),
         y: y,
         x: x
@@ -236,10 +240,11 @@ function BFS(y, x){
             let temp = que[i].x;
             temp += 1;
             let tempPath = [];
-            //tempPath = que[i].path;
             copyArr(tempPath, que[i].path);
             //Search adjacent cells
             if(que[i].x <= 19 && !visitedSet.has(que[i].y.toString()+"x"+temp.toString()) && board[que[i].y][temp] != 1){//right
+                let tempPath = [];
+                copyArr(tempPath, que[i].path);
                 let tempObj = {
                     path: tempPath,
                     curr: que[i].y.toString()+"x"+temp.toString(),
@@ -253,6 +258,8 @@ function BFS(y, x){
             temp = que[i].y;
             temp += 1;
             if(que[i].y <= 7 && !visitedSet.has(temp.toString()+"x"+que[i].x.toString()) && board[temp][que[i].x] != 1){//down
+                let tempPath = [];
+                copyArr(tempPath, que[i].path);
                 let tempObj = {
                     path: tempPath,
                     curr: temp.toString()+"x"+que[i].x.toString(),
@@ -266,6 +273,8 @@ function BFS(y, x){
             temp = que[i].x;
             temp -= 1;
             if(que[i].x >= 1 && !visitedSet.has(que[i].y.toString()+"x"+temp.toString()) && board[que[i].y][temp] != 1){//left
+                let tempPath = [];
+                copyArr(tempPath, que[i].path);
                 let tempObj = {
                     path: tempPath,
                     curr: que[i].y.toString()+"x"+temp.toString(),
@@ -279,6 +288,8 @@ function BFS(y, x){
             temp = que[i].y;
             temp -= 1;
             if(que[i].y >= 1 && !visitedSet.has(temp.toString()+"x"+que[i].x.toString()) && board[temp][que[i].x] != 1){//up
+                let tempPath = [];
+                copyArr(tempPath, que[i].path);
                 let tempObj = {
                     path: tempPath,
                     curr: temp.toString()+"x"+que[i].x.toString(),
