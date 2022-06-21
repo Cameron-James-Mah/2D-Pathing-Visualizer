@@ -76,6 +76,20 @@ function reset(){
     }
 }
 
+function redo(){//Reset board except walls
+    if(lockout){
+        return;
+    }
+    //alert(lockout);
+    for(let i = 0; i < 9; i++){
+        for(let j = 0; j < 21; j++){
+            if(board[i][j] != 1){
+                document.getElementById(String(i)+"x"+String(j)).style.backgroundColor = 'white';
+            }
+        }
+    }
+}
+
 function solve(){
     //populate board array with the proper values
     //Determine the selected algo
@@ -168,7 +182,11 @@ function clearArr(arr){
         arr.pop();
     }
 }
-
+function copyArr(arr1, arr2){
+    for(let i = 0; i < arr2.length; i++){
+        arr1.push(arr2[i]);
+    }
+}
 function visualize(index){//Show path traversed by the algorithm
     if(index >= searchCache.length){
         setTimeout(() => showPath(pathCache.length-1), speed);
@@ -178,6 +196,10 @@ function visualize(index){//Show path traversed by the algorithm
     document.getElementById(searchCache[index]).style.backgroundColor = "DodgerBlue";
 }
 
+
+function cacheBFS(){
+    
+}
 function showPath(index){ //Show path from start to goal without branches
     if(index < 0){
         lockout = false;
@@ -206,15 +228,18 @@ function BFS(y, x){
             searchCache.push(que[i].curr);
             if(board[que[i].y][que[i].x] == 3){
                 found = true;
+                pathCache = que[i].path;
                 //Append to playback arr, i think that que[i].path should have an arr of the path
                 return;
             }
             //Kind of choppy way to do things below but I will fix later
             let temp = que[i].x;
             temp += 1;
-            let tempPath = que[i].path;
+            let tempPath = [];
+            //tempPath = que[i].path;
+            copyArr(tempPath, que[i].path);
             //Search adjacent cells
-            if(que[i].x <= 19 && !visitedSet.has(que[i].y.toString()+"x"+temp.toString())){//right
+            if(que[i].x <= 19 && !visitedSet.has(que[i].y.toString()+"x"+temp.toString()) && board[que[i].y][temp] != 1){//right
                 let tempObj = {
                     path: tempPath,
                     curr: que[i].y.toString()+"x"+temp.toString(),
@@ -227,7 +252,7 @@ function BFS(y, x){
             }
             temp = que[i].y;
             temp += 1;
-            if(que[i].y <= 7 && !visitedSet.has(temp.toString()+"x"+que[i].x.toString())){//down
+            if(que[i].y <= 7 && !visitedSet.has(temp.toString()+"x"+que[i].x.toString()) && board[temp][que[i].x] != 1){//down
                 let tempObj = {
                     path: tempPath,
                     curr: temp.toString()+"x"+que[i].x.toString(),
@@ -240,7 +265,7 @@ function BFS(y, x){
             }
             temp = que[i].x;
             temp -= 1;
-            if(que[i].x >= 1 && !visitedSet.has(que[i].y.toString()+"x"+temp.toString())){//left
+            if(que[i].x >= 1 && !visitedSet.has(que[i].y.toString()+"x"+temp.toString()) && board[que[i].y][temp] != 1){//left
                 let tempObj = {
                     path: tempPath,
                     curr: que[i].y.toString()+"x"+temp.toString(),
@@ -253,7 +278,7 @@ function BFS(y, x){
             }
             temp = que[i].y;
             temp -= 1;
-            if(que[i].y >= 1 && !visitedSet.has(temp.toString()+"x"+que[i].x.toString())){//up
+            if(que[i].y >= 1 && !visitedSet.has(temp.toString()+"x"+que[i].x.toString()) && board[temp][que[i].x] != 1){//up
                 let tempObj = {
                     path: tempPath,
                     curr: temp.toString()+"x"+que[i].x.toString(),
