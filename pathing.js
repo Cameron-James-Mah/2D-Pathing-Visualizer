@@ -13,8 +13,8 @@ let searchCache = []; //algorithm searched path from start to goal
 let found = false; //
 let pathCache = []; //Direct playback path from start to goal
 let lockout = false; //Disable all buttons and user input during this state, causes issues if during visualization something like reset is pressed
-let speed = 200; //Speed selected in selection box, affects visualize speed of algorithm. Used in setTimeout call so higher value = slower speed.
-let speed2 = 100; //Speed for the playback path
+let speed; //Speed selected in selection box, affects visualize speed of algorithm. Used in setTimeout call so higher value = slower speed.
+let speed2; //Speed for the playback path. Both speeds adjusted in solve()
 let pathBFS = []; //Path for BFS, I think just have an arr of objects with ref to current cell value and prev cell value
 
 
@@ -97,9 +97,9 @@ function solve(){
         return;
     }
     //alert(document.getElementById("speed").value);
-    speed = 200;
+    speed = 100;
     speed = speed/document.getElementById("speed").value;
-    speed2 = 100;
+    speed2 = 50;
     speed2 = speed2/document.getElementById("speed").value;
     lockout = true;
     let y = 0;
@@ -162,9 +162,7 @@ function solve(){
     else if(document.getElementById("algo").value == "A*"){
         
     }
-    else if(document.getElementById("algo").value == "Dijkstra"){
-        
-    }
+    
     //DFS(y, x);
     if(found){//playback visualization
         //alert(1);
@@ -206,12 +204,10 @@ function showPath(index){ //Show path from start to goal without branches
 }
 
 function A(){
-
+    
 }
 
-function dijkstra(){
 
-}
 
 //Maybe objects into queue that hold ref to parent cord
 function BFS(y, x){
