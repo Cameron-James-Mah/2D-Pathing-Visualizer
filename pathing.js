@@ -11,10 +11,11 @@ let selected = "";
 visitedSet = new Set();
 let searchCache = []; //algorithm searched path from start to goal
 let found = false;
-let pathCache = []; //Direct path from start to goal
+let pathCache = []; //Direct playback path from start to goal
 let lockout = false; //Disable all buttons and user input during this state, causes issues if during visualization something like reset is pressed
 let speed = 200; //Speed selected in selection box, affects visualize speed of algorithm. Used in setTimeout call so higher value = slower speed.
 let speed2 = 100;
+let pathBFS = []; //Path for BFS, I think just have an arr of objects with ref to current cell value and prev cell value
 
 
 //User will click button to select what the cell will be then click the cell, default will be passable
@@ -142,7 +143,7 @@ function solve(){
         DFS(y, x);
     }
     else if(document.getElementById("algo").value == "BFS"){
-
+        BFS(y, x);
     }
     else if(document.getElementById("algo").value == "A*"){
         
@@ -187,8 +188,86 @@ function showPath(index){ //Show path from start to goal without branches
 }
 
 //Maybe objects into queue that hold ref to parent cord
-function BFS(){
-
+function BFS(y, x){
+    //alert(1);
+    let que = [];
+    let obj = {
+        path: [],
+        curr: y.toString()+"x"+x.toString(),
+        y: y,
+        x: x
+    }
+    //visitedSet.add()
+    que.push(obj);
+    while(que.length > 0){
+        let qSize = que.length;
+        for(let i = 0; i < qSize; i++){
+            //visitedSet.add(que[i].curr);
+            searchCache.push(que[i].curr);
+            if(board[que[i].y][que[i].x] == 3){
+                found = true;
+                //Append to playback arr, i think that que[i].path should have an arr of the path
+                return;
+            }
+            //Kind of choppy way to do things below but I will fix later
+            let temp = que[i].x;
+            temp += 1;
+            let tempPath = que[i].path;
+            //Search adjacent cells
+            if(que[i].x <= 19 && !visitedSet.has(que[i].y.toString()+"x"+temp.toString())){//right
+                let tempObj = {
+                    path: tempPath,
+                    curr: que[i].y.toString()+"x"+temp.toString(),
+                    y: que[i].y,
+                    x: temp
+                }
+                visitedSet.add(tempObj.curr);
+                tempObj.path.push(tempObj.curr);
+                que.push(tempObj);
+            }
+            temp = que[i].y;
+            temp += 1;
+            if(que[i].y <= 7 && !visitedSet.has(temp.toString()+"x"+que[i].x.toString())){//down
+                let tempObj = {
+                    path: tempPath,
+                    curr: temp.toString()+"x"+que[i].x.toString(),
+                    y: temp,
+                    x: que[i].x
+                }
+                visitedSet.add(tempObj.curr);
+                tempObj.path.push(tempObj.curr);
+                que.push(tempObj);
+            }
+            temp = que[i].x;
+            temp -= 1;
+            if(que[i].x >= 1 && !visitedSet.has(que[i].y.toString()+"x"+temp.toString())){//left
+                let tempObj = {
+                    path: tempPath,
+                    curr: que[i].y.toString()+"x"+temp.toString(),
+                    y: que[i].y,
+                    x: temp
+                }
+                visitedSet.add(tempObj.curr);
+                tempObj.path.push(tempObj.curr);
+                que.push(tempObj);
+            }
+            temp = que[i].y;
+            temp -= 1;
+            if(que[i].y >= 1 && !visitedSet.has(temp.toString()+"x"+que[i].x.toString())){//up
+                let tempObj = {
+                    path: tempPath,
+                    curr: temp.toString()+"x"+que[i].x.toString(),
+                    y: temp,
+                    x: que[i].x
+                }
+                visitedSet.add(tempObj.curr);
+                tempObj.path.push(tempObj.curr);
+                que.push(tempObj);
+            }
+        }
+        que = que.slice(qSize);
+        //alert(que.length);
+    }
 }
 
 
@@ -210,11 +289,12 @@ function DFS(y, x){
         return;
     }
     visitedSet.add(cord);
+    //Search adjacent cells
     DFS(y, x+1);
     DFS(y+1, x);
     DFS(y, x-1);
     DFS(y-1, x);
-    if(!found){
+    if(!found){//If reached here and not found goal then branch leads nowhere
         pathCache.pop();
     }
     
