@@ -104,6 +104,8 @@ function solve(){
     lockout = true;
     let y = 0;
     let x = 0;
+    let goalY = 0;
+    let goalX = 0;
     let start = 0;
     let end = 0;
     for(let i = 0; i < 9; i++){
@@ -127,6 +129,8 @@ function solve(){
             else if(document.getElementById(String(i)+"x"+String(j)).style.backgroundColor == 'red'){
                 //alert(String(i)+"x"+String(j));
                 board[i][j] = 3;
+                goalY = i;
+                goalX = j;
                 end++;
             }
             
@@ -134,18 +138,22 @@ function solve(){
     }
     if(start == 0){
         alert("No start");
+        lockout = false;
         return;
     }
     if(start > 1){
         alert("Too many starts");
+        lockout = false;
         return;
     }
     if(end == 0){
         alert("No goal");
+        lockout = false;
         return;
     }
     if(end > 1){
         alert("Too many goals");
+        lockout = false;
         return;
     }
     //Reset for next search
@@ -160,7 +168,7 @@ function solve(){
         BFS(y, x);
     }
     else if(document.getElementById("algo").value == "A*"){
-        
+        A(y, x, goalY, goalX);
     }
     
     //DFS(y, x);
@@ -202,10 +210,121 @@ function showPath(index){ //Show path from start to goal without branches
     setTimeout(() => showPath(index-1), speed2);
     document.getElementById(pathCache[index]).style.backgroundColor = "MediumSeaGreen";
 }
+//I think for my arr of cells i can visit, I can maybe have them sorted since i will be checking through that list many times it may be beneficial
+function A(y, x, goalY, goalX){
+    let possible = []; //arr of possible cells to visit, maybe have sorted in asc order
+    let obj = {
+        path: [y.toString()+"x"+x.toString()],
+        cost: 0,
+        curr: y.toString()+"x"+x.toString(),
+        y: y,
+        x: x
+    }
 
-function A(){
+    possible.push(obj);
+    visitedSet.add(possible[0].curr);
+    while(possible.length > 0){
+        //alert(possible[0].curr);
+        searchCache.push(possible[0].curr);
+        if(board[possible[0].y][possible[0].x] == 3){
+            found = true;
+            pathCache = possible[0].path;
+            return;
+        }
+        //get the neighbor with lowest heuristic cost, if i keep path sorted then possible[i].curr will be the next
+        let prevPath = possible[0].path;
+        let prevY = possible[0].y;
+        let prevX = possible[0].x;
+
+        //evaluate heuristic cost of adjacent cells
+        let temp = prevX;
+        temp += 1;
+        possible = possible.slice(1);
+        //alert(possible.length);
+        if(prevX <= 19 && !visitedSet.has(prevY.toString()+"x"+temp.toString()) && board[prevY][temp] != 1){//right
+            //let hc = Math.abs(goalY-y)+Math.abs(goalX-temp);
+            let tempPath = [];
+            copyArr(tempPath, prevPath);
+            let tempObj = {
+                path: tempPath,
+                cost: Math.abs(goalY-prevY)+Math.abs(goalX-temp),
+                curr: prevY.toString()+"x"+temp.toString(),
+                y: prevY,
+                x: temp
+            }
+            tempObj.path.push(tempObj.curr);
+            insert(possible, tempObj);
+            visitedSet.add(tempObj.curr);
+        }
+        temp = prevY;
+        temp += 1;
+        if(prevY <= 7 && !visitedSet.has(temp.toString()+"x"+prevX.toString()) && board[temp][prevX] != 1){//down
+            let tempPath = [];
+            copyArr(tempPath, prevPath);
+            let tempObj = {
+                path: tempPath,
+                cost: Math.abs(goalY-temp)+Math.abs(goalX-prevX),
+                curr: temp.toString()+"x"+prevX.toString(),
+                y: temp,
+                x: prevX
+            }
+            tempObj.path.push(tempObj.curr);
+            insert(possible, tempObj);
+            visitedSet.add(tempObj.curr);
+        }
+        temp = prevX;
+        temp -= 1;
+        if(prevX >= 1 && !visitedSet.has(prevY.toString()+"x"+temp.toString()) && board[prevY][temp] != 1){//left
+            let tempPath = [];
+            copyArr(tempPath, prevPath);
+            let tempObj = {
+                path: tempPath,
+                cost: Math.abs(goalY-prevY)+Math.abs(goalX-temp),
+                curr: prevY.toString()+"x"+temp.toString(),
+                y: prevY,
+                x: temp
+            }
+            tempObj.path.push(tempObj.curr);
+            insert(possible, tempObj);
+            visitedSet.add(tempObj.curr);
+        }
+        temp = prevY;
+        temp -= 1;
+        if(prevY >= 1 && !visitedSet.has(temp.toString()+"x"+prevX.toString()) && board[temp][prevX] != 1){//up
+            let tempPath = [];
+            copyArr(tempPath, prevPath);
+            let tempObj = {
+                path: tempPath,
+                cost: Math.abs(goalY-temp)+Math.abs(goalX-prevX),
+                curr: temp.toString()+"x"+prevX.toString(),
+                y: temp,
+                x: prevX
+            }
+            tempObj.path.push(tempObj.curr);
+            insert(possible, tempObj);
+            visitedSet.add(tempObj.curr);
+        }
+        
+    }
     
 }
+
+function insert(arr, obj){
+    for(let i = 0; i < arr.length; i++){
+        if(arr[i].cost >= obj.cost){
+            arr.splice(i, 0, obj);
+            return;
+        }
+    }
+    arr.push(obj);
+}
+
+function getCost(y, x, goalY, goalX){
+    return Math.abs(goalY-y)+Math.abs(goalX-x);
+}
+
+
+
 
 
 
