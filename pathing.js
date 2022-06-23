@@ -26,9 +26,6 @@ function validate(val){
         val.value = val.value.substr(1,2);
         return;
     }
-    //alert(val);
-    //val.style.backgroundColor = "green";
-    //val.value = "";
 }
 
 function colorChanger(e){
@@ -96,7 +93,6 @@ function solve(){
     if(lockout){
         return;
     }
-    //alert(document.getElementById("speed").value);
     speed = 100;
     speed = speed/document.getElementById("speed").value;
     speed2 = 50;
@@ -112,22 +108,18 @@ function solve(){
         board[i] = [];
         for(let j = 0; j < 21; j++){
             if(document.getElementById(String(i)+"x"+String(j)).style.backgroundColor == 'white'){
-                //alert(String(i)+"x"+String(j));
                 board[i][j] = 0; 
             }
             else if(document.getElementById(String(i)+"x"+String(j)).style.backgroundColor == 'black'){
-                //alert(String(i)+"x"+String(j));
                 board[i][j] = 1;
             }
             else if(document.getElementById(String(i)+"x"+String(j)).style.backgroundColor == 'green'){
-                //alert(String(i)+"x"+String(j));
                 board[i][j] = 2;
                 y = i;
                 x = j;
                 start++;
             }
             else if(document.getElementById(String(i)+"x"+String(j)).style.backgroundColor == 'red'){
-                //alert(String(i)+"x"+String(j));
                 board[i][j] = 3;
                 goalY = i;
                 goalX = j;
@@ -173,13 +165,12 @@ function solve(){
     else if(document.getElementById("algo").value == "WFS"){
         WFS(y, x, goalY, goalX);
     }
-    
-    //DFS(y, x);
+    else if(document.getElementById("algo").value == "RFS"){
+        RFS(y, x);
+    }
+
     if(found){//playback visualization
-        //alert(1);
         visualize(0);
-        //alert(showPath.length);
-        //setTimeout(() => showPath(pathCache.length-1), 200);
     }
     else{
         alert("No valid path");
@@ -214,6 +205,90 @@ function showPath(index){ //Show path from start to goal without branches
     setTimeout(() => showPath(index-1), speed2);
     document.getElementById(pathCache[index]).style.backgroundColor = "MediumSeaGreen";
 }
+//Issue because I am adding to the array randomly so i var will not always point to right index
+function RFS(y, x){
+    let que = [];
+    let obj = {
+        path: [y.toString()+"x"+x.toString()],
+        curr: y.toString()+"x"+x.toString(),
+        y: y,
+        x: x
+    }
+    que.push(obj);
+    while(que.length > 0){
+        let i = Math.floor(Math.random() * que.length);
+        searchCache.push(que[i].curr);
+        if(board[que[i].y][que[i].x] == 3){
+            found = true;
+            pathCache = que[i].path;
+            return;
+        }
+        let temp = que[i].x;
+        temp += 1;
+        let tempPath = [];
+        copyArr(tempPath, que[i].path);
+        if(que[i].x <= 19 && !visitedSet.has(que[i].y.toString()+"x"+temp.toString()) && board[que[i].y][temp] != 1){//right
+            let tempPath = [];
+            copyArr(tempPath, que[i].path);
+            let tempObj = {
+                path: tempPath,
+                curr: que[i].y.toString()+"x"+temp.toString(),
+                y: que[i].y,
+                x: temp
+            }
+            visitedSet.add(tempObj.curr);
+            tempObj.path.push(tempObj.curr);
+            que.push(tempObj);
+        }
+        temp = que[i].y;
+        temp += 1;
+        if(que[i].y <= 7 && !visitedSet.has(temp.toString()+"x"+que[i].x.toString()) && board[temp][que[i].x] != 1){//down
+            let tempPath = [];
+            copyArr(tempPath, que[i].path);
+            let tempObj = {
+                path: tempPath,
+                curr: temp.toString()+"x"+que[i].x.toString(),
+                y: temp,
+                x: que[i].x
+            }
+            visitedSet.add(tempObj.curr);
+            tempObj.path.push(tempObj.curr);
+            que.push(tempObj);
+        }
+        temp = que[i].x;
+        temp -= 1;
+        if(que[i].x >= 1 && !visitedSet.has(que[i].y.toString()+"x"+temp.toString()) && board[que[i].y][temp] != 1){//left
+            let tempPath = [];
+            copyArr(tempPath, que[i].path);
+            let tempObj = {
+                path: tempPath,
+                curr: que[i].y.toString()+"x"+temp.toString(),
+                y: que[i].y,
+                x: temp
+            }
+            visitedSet.add(tempObj.curr);
+            tempObj.path.push(tempObj.curr);
+            que.push(tempObj);
+        }
+        temp = que[i].y;
+        temp -= 1;
+        if(que[i].y >= 1 && !visitedSet.has(temp.toString()+"x"+que[i].x.toString()) && board[temp][que[i].x] != 1){//up
+            let tempPath = [];
+            copyArr(tempPath, que[i].path);
+            let tempObj = {
+                path: tempPath,
+                curr: temp.toString()+"x"+que[i].x.toString(),
+                y: temp,
+                x: que[i].x
+            }
+            visitedSet.add(tempObj.curr);
+            tempObj.path.push(tempObj.curr);
+            que.push(tempObj);
+        }
+    }
+    que = que.slice(i+1);
+}
+
 
 //Joke algorithm, opposite of A* to take the worst possible search 
 function WFS(y, x, goalY, goalX){
@@ -335,7 +410,6 @@ function A(y, x, goalY, goalX){
     possible.push(obj);
     visitedSet.add(possible[0].curr);
     while(possible.length > 0){
-        //alert(possible[0].curr);
         searchCache.push(possible[0].curr);
         if(board[possible[0].y][possible[0].x] == 3){
             found = true;
@@ -528,30 +602,23 @@ function BFS(y, x){
             }
         }
         que = que.slice(qSize);
-        //alert(que.length);
     }
 }
 
 
 
 function DFS(y, x){
-    //alert(visitedSet.size);
     let cord = y.toString()+"x"+x.toString();
-    //alert(y+"."+x);
-    if(y < 0 || x < 0 || y >= 9 || x >= 21 || visitedSet.has(cord) || board[y][x] == 1 || found){
-        //alert(y+"."+x);
+    if(y < 0 || x < 0 || y >= 9 || x >= 21 || visitedSet.has(cord) || board[y][x] == 1 || found){//Boundary check
         return;
     }
     pathCache.push(cord);
     searchCache.push(cord);
     if(board[y][x] == 3){//solved
-        //alert(1);
         found = true;
-        //maybe call my visualization here
         return;
     }
     visitedSet.add(cord);
-    //Search adjacent cells
     DFS(y, x+1);
     DFS(y+1, x);
     DFS(y, x-1);
