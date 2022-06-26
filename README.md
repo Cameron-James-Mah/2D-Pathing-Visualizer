@@ -152,9 +152,108 @@ function BFS(y, x){
     }
 }
 ```
-BFS works by iterating through cells wave by wave as you expand further from the original cell. You can do this by 
+Here I am iterating over my array "que" which holds all of the visited cells of the current wave. For each cell in this array at the current size(size of the array will change as i push cells in so get size of last wave before starting next wave) check its neighbors and add all non visited cells within the boundaries of the grid.
+After going through the current wave of cells remove all of the current wave(que = que.slice(qSize)) and rinse and repeat for next wave.
+
+- A*
+```
+function A(y, x, goalY, goalX){
+    let possible = []; //arr of possible cells to visit, maybe have sorted in asc order
+    let obj = {
+        path: [y.toString()+"x"+x.toString()],
+        cost: 0,
+        curr: y.toString()+"x"+x.toString(),
+        y: y,
+        x: x
+    }
+
+    possible.push(obj);
+    visitedSet.add(possible[0].curr);
+    while(possible.length > 0){
+        searchCache.push(possible[0].curr);
+        if(board[possible[0].y][possible[0].x] == 3){
+            found = true;
+            pathCache = possible[0].path;
+            return;
+        }
+        //get the neighbor with lowest heuristic cost, if i keep path sorted then possible[i].curr will be the next
+        let prevPath = possible[0].path;
+        let prevY = possible[0].y;
+        let prevX = possible[0].x;
+
+        //evaluate heuristic cost of adjacent cells
+        let temp = prevX;
+        temp += 1;
+        possible = possible.slice(1);
+        //alert(possible.length);
+        if(prevX <= 19 && !visitedSet.has(prevY.toString()+"x"+temp.toString()) && board[prevY][temp] != 1){//right
+            //let hc = Math.abs(goalY-y)+Math.abs(goalX-temp);
+            let tempPath = [];
+            copyArr(tempPath, prevPath);
+            let tempObj = {
+                path: tempPath,
+                cost: Math.abs(goalY-prevY)+Math.abs(goalX-temp),
+                curr: prevY.toString()+"x"+temp.toString(),
+                y: prevY,
+                x: temp
+            }
+            tempObj.path.push(tempObj.curr);
+            insert(possible, tempObj);
+            visitedSet.add(tempObj.curr);
+        }
+        temp = prevY;
+        temp += 1;
+        if(prevY <= 7 && !visitedSet.has(temp.toString()+"x"+prevX.toString()) && board[temp][prevX] != 1){//down
+            let tempPath = [];
+            copyArr(tempPath, prevPath);
+            let tempObj = {
+                path: tempPath,
+                cost: Math.abs(goalY-temp)+Math.abs(goalX-prevX),
+                curr: temp.toString()+"x"+prevX.toString(),
+                y: temp,
+                x: prevX
+            }
+            tempObj.path.push(tempObj.curr);
+            insert(possible, tempObj);
+            visitedSet.add(tempObj.curr);
+        }
+        temp = prevX;
+        temp -= 1;
+        if(prevX >= 1 && !visitedSet.has(prevY.toString()+"x"+temp.toString()) && board[prevY][temp] != 1){//left
+            let tempPath = [];
+            copyArr(tempPath, prevPath);
+            let tempObj = {
+                path: tempPath,
+                cost: Math.abs(goalY-prevY)+Math.abs(goalX-temp),
+                curr: prevY.toString()+"x"+temp.toString(),
+                y: prevY,
+                x: temp
+            }
+            tempObj.path.push(tempObj.curr);
+            insert(possible, tempObj);
+            visitedSet.add(tempObj.curr);
+        }
+        temp = prevY;
+        temp -= 1;
+        if(prevY >= 1 && !visitedSet.has(temp.toString()+"x"+prevX.toString()) && board[temp][prevX] != 1){//up
+            let tempPath = [];
+            copyArr(tempPath, prevPath);
+            let tempObj = {
+                path: tempPath,
+                cost: Math.abs(goalY-temp)+Math.abs(goalX-prevX),
+                curr: temp.toString()+"x"+prevX.toString(),
+                y: temp,
+                x: prevX
+            }
+            tempObj.path.push(tempObj.curr);
+            insert(possible, tempObj);
+            visitedSet.add(tempObj.curr);
+        }
+        
+    }
+    
+}
+```
+A* is similar to BFS except we prioritize the lowest estimated cost(Δx+Δy) from goal to the neighboring cells. Here I am using an array to hold my neighboring cells like in BFS except I order them in ascending order in cost. Everytime I traverse the cell at the first index of this array then add its valid neighboring cells to my array keeping the ascending order.
 
 
-# Conclousion
-
-# Resources that helped
